@@ -9,32 +9,35 @@
     
     <!-- Script pour gérer le routage SPA sur GitHub Pages -->
     <script type="text/javascript">
-      // Script de redirection pour les routes SPA sur GitHub Pages
-      (function(l) {
-        if (l.search[1] === '/') {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
-        }
-      }(window.location))
-    </script>
-    
-    <!-- Script supplémentaire pour gérer les routes profondes sur GitHub Pages -->
-    <script type="text/javascript">
-      // Vérifier si nous sommes redirigés depuis la page 404.html
-      (function(l) {
-        if (l.pathname.split('/').length > 2 && l.pathname.indexOf('/?/') === -1) {
-          // Nous sommes sur une route profonde, vérifions si nous avons besoin de rediriger
-          if (l.pathname.indexOf('/Collectif-Feydeau---app/') === 0) {
-            // Déjà dans le bon contexte, ne rien faire
-          } else {
-            console.log('Redirection depuis une route profonde');
+      // Vérifier si nous venons d'être redirigés depuis la page 404
+      (function() {
+        // Récupérer l'URL stockée dans sessionStorage
+        var redirectUrl = sessionStorage.getItem('redirectUrl');
+        if (redirectUrl) {
+          // Effacer l'URL stockée
+          sessionStorage.removeItem('redirectUrl');
+          
+          // Extraire le chemin relatif de l'URL complète
+          var url = new URL(redirectUrl);
+          var path = url.pathname;
+          
+          // Supprimer le préfixe du dépôt GitHub Pages
+          var basePath = '/Collectif-Feydeau---app/';
+          if (path.startsWith(basePath)) {
+            path = path.substring(basePath.length);
+          }
+          
+          // Naviguer vers la bonne route dans l'application React
+          if (path && path !== '/') {
+            // Attendre que l'application React soit chargée
+            setTimeout(function() {
+              window.history.pushState(null, null, basePath + path);
+              // Déclencher un événement pour informer l'application du changement d'URL
+              window.dispatchEvent(new Event('popstate'));
+            }, 500);
           }
         }
-      }(window.location))
+      })();
     </script>
 
     <meta property="og:title" content="Collectif Feydeau" />
@@ -45,7 +48,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-    <script type="module" crossorigin src="/Collectif-Feydeau---app/assets/index-BCEfcS5r.js"></script>
+    <script type="module" crossorigin src="/Collectif-Feydeau---app/assets/index-XbEhdvGJ.js"></script>
     <link rel="stylesheet" crossorigin href="/Collectif-Feydeau---app/assets/index-BPgX7jAQ.css">
   </head>
 

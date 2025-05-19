@@ -3,12 +3,17 @@
 <head>
   <meta charset="utf-8">
   <title>Collectif Feydeau</title>
-  <script type="text/javascript">
-    // Redirection simple vers la page principale
-    window.location.href = "/Collectif-Feydeau---app/";
+  <script>
+    // Stocker l'URL actuelle
+    sessionStorage.setItem('redirectUrl', window.location.href);
+    
+    // Redirection vers la page principale
+    window.location.replace('/Collectif-Feydeau---app/');
   </script>
 </head>
 <body>
+  <h1>Page non trouvée</h1>
+  <p>Redirection vers la page d'accueil...</p>
   <p>Redirection vers l'application Collectif Feydeau...</p>
 </body>
 </html>
